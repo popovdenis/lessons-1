@@ -1,0 +1,73 @@
+<?php
+//1. создание парсера
+$sax = xml_parser_create('utf-8');
+// назначение обработчиков начальных и конечных тегов
+xml_set_element_handler($sax, 'onStart', 'onEnd');
+// назначение обработчика текстового содержимого
+xml_set_character_data_handler($sax, 'onText');
+//2. функция-обработчик начальных тегов
+/**
+ * @param resource $parser Parser resource.
+ * @param string $tag Element tag in uppercase.
+ * @param string $attributes Attributes array.
+ *
+ */
+function onStart($parser, $tag, $attributes) {
+//    echo $tag . '<br>';
+    if ($tag != 'CD' && $tag != 'CATALOG') {
+        echo '<td>';
+    }
+
+    if ($tag == 'CD') {
+        echo '<tr>';
+    }
+}
+//3. функция-обработчик закрываюших тегов
+/**
+ * @param resource $parser Parser resource
+ * @param string $tag Element teg in uppercase
+ */
+function onEnd($parser, $tag) {
+//    echo $tag . '<br>';
+    if ($tag != 'CD' && $tag != 'CATALOG') {
+        echo '</td>';
+    }
+
+    if ($tag == 'CD') {
+        echo '</tr>';
+    }
+}
+//4. функция-обработчик текстового содержимого
+/**
+ * @param resource $parser Parser resource.
+ * @param string $text Text element.
+ */
+function onText($parser, $text) {
+//    echo $text . '<br>';
+    echo $text;
+}
+?>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+    <title>Catalog</title>
+</head>
+<body>
+    <h1>CD Catalog</h1>
+    <table border="1" width="100%">
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Country</th>
+            <th>Company</th>
+            <th>Price</th>
+            <th>Year</th>
+        </tr>
+        <?php
+        // parsing ...
+        xml_parse($sax, file_get_contents('cd_catalog.xml'));
+        ?>
+    </table>
+</body>
+</html>

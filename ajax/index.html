@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="application/javascript" src="jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(document).ready(function(){
+//        jQuery('#example-1').click(function() {
+//            jQuery(this).load('http://lessons/ajax/example.html');
+//        })
+        $.ajax({
+            type: 'POST',
+            url: 'http://lessons/ajax/handler.php', // указываем URL и
+            data: {'email': 'monah40@gmail.com'},
+            success: function (data, textStatus) { // вешаем свой обработчик на функцию success
+                console.log(data);
+            },
+            dataType : "json",                     // тип загружаемых данных
+        });
+    });
+</script>
+<div class="example cursor" id="example-1">Click to update</div>
+</body>
+</html>

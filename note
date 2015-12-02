@@ -1,0 +1,7 @@
+Deep diving to PHP in 2015
+(de{2}p.+[^\ 0-9]+)
+([20][0-9])([0-9]{2})
+
+00:01:02:0A:8G:7K:35    ([0-9a-z][0-9a-z]:?){7}
+
+Denis Popov <monah40@gmail.com>  <[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,3}>

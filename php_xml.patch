@@ -1,0 +1,171 @@
+Index: team/HomeTask/hw9/task01/task01.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- team/HomeTask/hw9/task01/task01.php	(revision 041dc022f89c8c5969b7faea924f9884a95993d7)
++++ team/HomeTask/hw9/task01/task01.php	(revision )
+@@ -10,20 +10,20 @@
+ 
+ //2. функция-обработчик начальных тегов
+ function onStart($parser,$tag, $attr){
+-    if($tag == "USER" || $tag =="CATALOG"){
++    if($tag == "USER" || $tag =="CATALOG" || $tag =="ITEM"){
+         echo "<tr>";
+     }
+-    if($tag != "USER" && $tag !="CATALOG"){
++    if($tag != "USER" && $tag !="CATALOG" && $tag != "ITEM"){
+         echo "<td>";
+     }
+ }
+ 
+ //3. функция-обработчик закрываюших тегов
+ function onEnd($parser,$tag){
+-    if($tag == "USER" || $tag =="CATALOG"){
++    if($tag == "USER" || $tag =="CATALOG" || $tag =="ITEM"){
+         echo "</tr>";
+     }
+-    if($tag != "USER" && $tag !="CATALOG"){
++    if($tag != "USER" && $tag !="CATALOG" && $tag != "ITEM"){
+         echo "</td>";
+     }
+ }
+@@ -52,7 +52,7 @@
+     </tr>
+     <?php
+     // parsing ...
+-    xml_parse($sax, file_get_contents("allNews_DOM.xml"));
++    xml_parse($sax, file_get_contents("../task03/allNews_DOM.xml"));
+     ?>
+ </table>
+ </body>
+\ No newline at end of file
+Index: team/HomeTask/hw9/task02/news_bd.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- team/HomeTask/hw9/task02/news_bd.php	(revision 041dc022f89c8c5969b7faea924f9884a95993d7)
++++ team/HomeTask/hw9/task02/news_bd.php	(revision )
+@@ -78,12 +78,14 @@
+         $description = $this->getDescription();
+         $created_at = $this->getCreatedAt();
+ 
+-        $sql = sprintf("INSERT INTO news (`title`,`url`,`description`,`created_at`)
++        $sql = sprintf(
++            "INSERT INTO news (`title`,`url`,`description`,`created_at`)
+ VALUES ('$title','$url','$description','$created_at')",
+             mysqli_escape_string($title),
+             mysqli_escape_string($url),
+             mysqli_escape_string($description),
+-            mysqli_escape_string($created_at));
++            mysqli_escape_string($created_at)
++        );
+ 
+         $query = mysqli_query($this->db_connect(), $sql);
+         if ($query) {
+@@ -117,14 +119,15 @@
+ //        $key = array();
+         $value = array();
+ 
+-        while ($row = mysqli_fetch_assoc($query_result)) {
+-            foreach ($row as $k => $v) {
+-
+-//                $key[] = $k;
+-                $value[] = $v;
+-            }
+-                   }
++//        while ($row = mysqli_fetch_assoc($query_result)) {
++//            foreach ($row as $k => $v) {
++//
++////                $key[] = $k;
++//                $value[] = $v;
++//            }
++//        }
+ //     $result = array_combine($key, $value);
++        $value = mysqli_fetch_all($query_result, MYSQLI_ASSOC);
+ 
+         return $value;
+     }
+\ No newline at end of file
+Index: team/HomeTask/hw9/task03/rssNews.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- team/HomeTask/hw9/task03/rssNews.php	(revision 041dc022f89c8c5969b7faea924f9884a95993d7)
++++ team/HomeTask/hw9/task03/rssNews.php	(revision )
+@@ -11,14 +11,12 @@
+ 
+         $dom = new DOMDocument('1.0', 'utf-8');
+         $dom->formatOutput = true; // с отступами
+-//    $dom->preserveWhiteSpace = false;
++        $dom->preserveWhiteSpace = false;
+         $rss = $dom->createElement('rss');
+         $rss->setAttribute('version', '2.0');
+-
+         $dom->appendChild($rss);
+ 
+         $channel = $dom->createElement('channel');
+-
+         $rss->appendChild($channel);
+ 
+         $title = $dom->createElement('title', $rss_title);
+@@ -27,38 +25,33 @@
+         $channel->appendChild($title);
+         $channel->appendChild($url);
+ 
+-
+-        $arr = $this->getAllNews();
+-        $iarr = array('title', 'url', 'description', 'created_at');
+-        // var_dump($arr);
+-
++        foreach ($this->getAllNews() as $val) {
+-        $item = $dom->createElement('item');
++            $item = $dom->createElement('item');
+-        foreach ($iarr as $k2 => $key) {
+ 
+-            foreach ($arr as $k1 => $val) {
+-                if ($k2 == $k1) {
+-                    $iTitle = $dom->createElement("$key", "$val");
+-//                $iUrl = $dom->createElement("$key", "$val");
+-//                $iDescription = $dom->createElement("$key", "$val");
+-//                $iPubDate = $dom->createElement("$key", "$val");
++            $_title = $dom->createElement('title', $val['title']);
++            $_link = $dom->createElement('url', $val['url']);
++            $_description = $dom->createElement('description', $val['description']);
++            $_createdAt = $dom->createElement('createdAt', $val['created_at']);
+ 
+-                    $item->appendChild($iTitle);
+-//                $item->appendChild($iUrl);
+-//                $item->appendChild($iDescription);
+-//                $item->appendChild($iPubDate);
+-                }
+-            }
+-        }
++            $item->appendChild($_title);
++            $item->appendChild($_link);
++            $item->appendChild($_description);
++            $item->appendChild($_createdAt);
++
+-        $channel->appendChild($item);
++            $channel->appendChild($item);
++        }
++
+         $dom->save($rss_name);
+     }
+ 
+     public function getRss()//не работает ещё
+     {
+         $file = 'allNews_DOM.txt';
+-
+         if (file_exists($file)) {
+-            echo file_get_contents($file);
++            $dom = new DOMDocument();
++            $dom->load($file);
++
++            return $dom;
+         } else {
+             echo "Файл ." . $file . " не существует";
+         }
+\ No newline at end of file

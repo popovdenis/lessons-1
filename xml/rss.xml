@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<rss version="2.0">
+    <channel>
+        <title>News feed</title>
+        <link>Link to the feed</link>
+        <item>
+            <title>Item title</title>
+            <link>Link to the item</link>
+            <description>Description of item</description>
+
+            <pubDate>Publication date</pubDate>
+            <category>News category</category>
+        </item>
+    </channel>
+</rss>

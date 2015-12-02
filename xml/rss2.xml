@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>News feed</title>
+    <link>http://lessons/xml/news.php</link>
+    <item>
+      <title>Item title</title>
+      <link>Link to item</link>
+      <descriptiion>Description of item</descriptiion>
+      <pubDate>Publication date</pubDate>
+      <category>News category</category>
+    </item>
+    <item>
+      <title>Item title</title>
+      <link>Link to item</link>
+      <descriptiion>Description of item</descriptiion>
+      <pubDate>Publication date</pubDate>
+      <category>News category</category>
+    </item>
+    <item>
+      <title>Item title</title>
+      <link>Link to item</link>
+      <descriptiion>Description of item</descriptiion>
+      <pubDate>Publication date</pubDate>
+      <category>News category</category>
+    </item>
+  </channel>
+</rss>

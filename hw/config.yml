@@ -1,0 +1,6 @@
+parameters:
+    database_host: localhost
+    database_user: root
+    database_password: root
+    database_name: samp_db
+    database_port: 3306

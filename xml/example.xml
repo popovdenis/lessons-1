@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Пример XML разметки -->
+<catalog>
+    <book id="1">
+        <title>XML in a Nurshell</title>
+        <author>Elliot Rusty Harold</author>
+        <price currency="RUS">125</price>
+    </book>
+</catalog>

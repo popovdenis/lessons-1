@@ -1,0 +1,45 @@
+<?php
+$dom = new DOMDocument();
+$dom->load('cd_catalog.xml');
+//$dom->preserveWhiteSpace = false;
+$root = $dom->documentElement;
+// echo $root->nodeType;
+$cds = $root->childNodes;
+//echo $root->childNodes // ???
+?>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Catalog</title>
+</head>
+<body>
+<h1>CD Catalog</h1>
+<table border="1" width="100%">
+    <tr>
+        <th>Title</th>
+        <th>Artist</th>
+        <th>Country</th>
+        <th>Company</th>
+        <th>Price</th>
+        <th>Year</th>
+    </tr>
+    <?php
+    // parsing ...
+    foreach ($cds as $cd) {
+        if ($cd->nodeType == 1) {
+            echo '<tr>';
+            foreach ($cd->childNodes as $item) {
+                if ($item->nodeType == 1) {
+                    echo '<td>';
+                    echo $item->textContent;
+                    echo '</td>';
+                }
+            }
+            echo '</tr>';
+        }
+    }
+    ?>
+</table>
+</body>
+</html>

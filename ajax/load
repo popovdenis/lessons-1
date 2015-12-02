@@ -1,0 +1,13 @@
+// по окончанию загрузки страницы
+$(document).ready(function(){              
+    // вешаем на клик по элементу с id = example-1
+    $('#example-1').click(function(){
+        // загрузку HTML кода из файла example.html
+        $(this).load('ajax/example.html');       
+    }) 
+});
+
+// example.html
+Example<br/>
+Data Loaded By AJAX<br/>
+Bye-Bye

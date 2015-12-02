@@ -1,0 +1,30 @@
+USE `news`;
+
+CREATE TABLE
+  `subscriber` (
+  `id`    INT(5)      NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(35) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE
+  `subscription` (
+  `id`            INT(5) NOT NULL AUTO_INCREMENT,
+  `subscriber_id` INT(5) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `subscription`
+ADD CONSTRAINT fk_subscriber
+FOREIGN KEY (subscriber_id)
+REFERENCES `subscriber` (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+SELECT sb.email
+FROM `subscription` sbs
+  INNER JOIN subscriber sb ON sb.id = sbs.subscriber_id
+WHERE sb.email = 'test.ru';
+
+INSERT INTO subscriber (`email`) VALUE ('');
+INSERT INTO subscription (`subscriber_id`) VALUE ('');
